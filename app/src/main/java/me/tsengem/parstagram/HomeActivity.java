@@ -1,5 +1,6 @@
 package me.tsengem.parstagram;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -29,6 +30,7 @@ public class HomeActivity extends AppCompatActivity {
     private EditText descriptionInput;
     private Button createButton;
     private Button refreshButton;
+    private Button logOutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class HomeActivity extends AppCompatActivity {
         descriptionInput = findViewById(R.id.description_et);
         createButton = findViewById(R.id.create_btn);
         refreshButton = findViewById(R.id.refresh_btn);
+        logOutButton = findViewById(R.id.logout_btn);
 
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +56,13 @@ public class HomeActivity extends AppCompatActivity {
                 final ParseFile parseFile = new ParseFile(file);
 
                 createPost(description, parseFile, user);
+            }
+        });
+
+        logOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userLogOut();
             }
         });
 
@@ -104,6 +114,10 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void userLogOut() {
+        Log.d("Logout", "in userLogOut");
         ParseUser.logOut();
+        Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

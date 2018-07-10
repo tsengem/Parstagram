@@ -22,9 +22,18 @@
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme"
             android:icon="@drawable/icon"
-            android:roundIcon="@drawable/icon" >
+            android:roundIcon="@drawable/icon"
+            android:theme="@style/AppTheme">
+
+        </activity>
+        <activity
+            android:name=".SignUpActivity"
+            android:label="@string/title_activity_sign_up"
+            android:icon="@drawable/icon"
+            android:roundIcon="@drawable/icon"
+            android:theme="@style/AppTheme">
+
         </activity>
     </application>
 
