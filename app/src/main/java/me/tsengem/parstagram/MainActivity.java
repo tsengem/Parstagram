@@ -49,17 +49,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
                 startActivity(intent);
                 finish();
-                /*
-                ParseUser user = new ParseUser();
-
-                final String username = usernameInput.getText().toString();
-                final String password = passwordInput.getText().toString();
-
-                user.setUsername(username);
-                user.setPassword(password);
-
-                login(username, password);
-                */
             }
         });
     }
