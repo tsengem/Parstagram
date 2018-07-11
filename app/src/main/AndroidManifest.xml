@@ -21,20 +21,29 @@
         </activity>
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_home"
             android:icon="@drawable/icon"
+            android:label="@string/title_activity_home"
             android:roundIcon="@drawable/icon"
-            android:theme="@style/AppTheme">
-
-        </activity>
+            android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".SignUpActivity"
-            android:label="@string/title_activity_sign_up"
             android:icon="@drawable/icon"
+            android:label="@string/title_activity_sign_up"
             android:roundIcon="@drawable/icon"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" />
 
-        </activity>
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="my.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/fileprovider" />
+        </provider>
+
+        <activity android:name=".PostActivity" />
+        <activity android:name=".LogOutActivity"></activity>
     </application>
 
 </manifest>
