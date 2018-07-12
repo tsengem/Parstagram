@@ -23,6 +23,13 @@
             app:srcCompat="@drawable/ic_instagram_brand" />
     </android.support.v7.widget.Toolbar>
 
+    <FrameLayout
+        android:id="@+id/flContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigation"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <android.support.design.widget.BottomNavigationView
         android:layout_width="382dp"
@@ -33,6 +40,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/bottom_navigation"
         app:menu="@menu/bottom_tab" />
 
 </android.support.constraint.ConstraintLayout>

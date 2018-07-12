@@ -18,13 +18,14 @@ import java.util.List;
 
 import me.tsengem.parstagram.model.Post;
 
+
 public class PostActivity extends AppCompatActivity {
 
     private static final String imagePath = "/sdcard/DCIM/Camera/IMG_20180619_010347.jpg";
     private EditText descriptionInput;
     private Button refreshButton;
     private Button createButton;
-
+/*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,4 +92,5 @@ public class PostActivity extends AppCompatActivity {
             }
         });
     }
+    */
 }

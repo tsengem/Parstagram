@@ -1,6 +1,5 @@
 package me.tsengem.parstagram;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,39 +7,34 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
-
 import java.io.File;
-import java.util.List;
-
-import me.tsengem.parstagram.model.Post;
 
 public class HomeActivity extends AppCompatActivity {
 
-    public final String APP_TAG = "EmmaPhotoApp";
+    static public final String APP_TAG = "EmmaPhotoApp";
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
-    public String photoFileName = "photo.jpg";
-    File photoFile;
+    static public String photoFileName = "photo.jpg";
+    static File photoFile;
+
+    FragmentTransaction fragmentTransaction;
+    Fragment cameraFragment = new CameraFragment();
+    Fragment timelineFragment = new TimelineFragment();
+    Fragment userFragment = new UserFragment();
+
+    ImageView ivPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +44,33 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.icon);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
+
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                fragmentTransaction = fragmentManager.beginTransaction();
+
+                switch (item.getItemId()) {
+                    case R.id.ic_post:
+                        fragmentTransaction.replace(R.id.flContainer, cameraFragment).commit();
+                        onLaunchCamera();
+                        return true;
+                    case R.id.ic_home:
+                        Log.d("fragments", "home button was clicked!");
+                        fragmentTransaction.replace(R.id.flContainer, timelineFragment).commit();
+                        return true;
+                    case R.id.ic_user:
+                        fragmentTransaction.replace(R.id.flContainer, userFragment).commit();
+                        return true;
+
+                }
+                return false;
+            }
+        });
 
         /*
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -63,7 +84,6 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // inflate the menu; this adds items to the action bar if it is present
-        getMenuInflater().inflate(R.menu.camera, menu);
         getMenuInflater().inflate(R.menu.bottom_tab, menu);
         return true;
     }
@@ -71,19 +91,14 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getTitle().equals("")) {
-            Intent intent = new Intent(HomeActivity.this, LogOutActivity.class);
+            Intent intent = new Intent(HomeActivity.this, UserFragment.class);
             startActivity(intent);
             finish();
-        }
-
-        if (item.getTitle().equals("Camera")) {
-            View view = new View(this);
-            onLaunchCamera(view);
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void onLaunchCamera(View view) {
+    public void onLaunchCamera() {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Create a File reference to access to future access
@@ -115,8 +130,6 @@ public class HomeActivity extends AppCompatActivity {
             Log.d(APP_TAG, "failed to create directory");
         }
 
-        Log.d(APP_TAG, mediaStorageDir.getPath());
-
         // Return the file target for the photo based on filename
         File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
 
@@ -125,17 +138,54 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
+
+                /*
                 // by this point we have the camera photo on disk
                 Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
                 // RESIZE BITMAP, see section below
+
+                File takenPhotoUri = getPhotoFileUri(photoFileName);
+                // by this point we have the camera photo on disk
+                Bitmap rawTakenImage = BitmapFactory.decodeFile(takenPhotoUri.getPath());
+                // See BitmapScaler.java: https://gist.github.com/nesquena/3885707fd3773c09f1bb
+                Bitmap resizedBitmap = BitmapScaler.scaleToFitWidth(rawTakenImage, 100);
+
+                // Configure byte output stream
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                // Compress the image further
+                resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+                // Create a new file for the resized bitmap (`getPhotoFileUri` defined above)
+                File resizedUri = getPhotoFileUri(photoFileName + "_resized");
+
+                try {
+                    File resizedFile = new File(resizedUri.getPath());
+                    resizedFile.createNewFile();
+                    FileOutputStream fos = new FileOutputStream(resizedFile);
+                    // Write the bytes of the bitmap to file
+                    fos.write(bytes.toByteArray());
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
                 // Load the taken image into a preview
                 ImageView ivPreview = (ImageView) findViewById(R.id.ivPreview);
                 ivPreview.setImageBitmap(takenImage);
+                */
+
+                String imagePath = photoFile.getAbsolutePath();
+                Bitmap rawTakenImage = BitmapFactory.decodeFile(imagePath);
+                Bitmap resizedBitmap = BitmapScaler.scaleToFitWidth(rawTakenImage, 400);
+                ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
+                ivPhoto.setImageBitmap(resizedBitmap);
             } else { // Result was a failure
                 Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
     }
 }
+
