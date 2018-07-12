@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,8 @@ public class CameraFragment extends Fragment {
     Button post_b;
     EditText tvCaption;
 
+    ProgressBar pbLoading;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_camera_fragment, container, false);
@@ -47,10 +50,14 @@ public class CameraFragment extends Fragment {
         Log.d("fragments", "post button was clicked!");
         tvCaption = view.findViewById(R.id.caption_et);
 
+        pbLoading = view.findViewById(R.id.pbLoading);
+        pbLoading.setVisibility(View.INVISIBLE);
+
         post_b = view.findViewById(R.id.b_post);
         post_b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pbLoading.setVisibility(View.VISIBLE);
                 Toast.makeText(v.getContext(), "Post saved", Toast.LENGTH_LONG).show();
 
                 final Post newPost = new Post();
@@ -70,6 +77,7 @@ public class CameraFragment extends Fragment {
                                 public void done(ParseException e) {
                                     if (e == null) {
                                         Log.d("CameraFragment", "Create post success!");
+                                        pbLoading.setVisibility(View.INVISIBLE);
                                     } else {
                                         e.printStackTrace();
                                     }

@@ -107,10 +107,6 @@ public class TimelineFragment extends Fragment {
     }
 
     public void fetchTimelineAsync(int page) {
-        // Send the network request to fetch the updated data
-        // `client` here is an instance of Android Async HTTP
-        // getHomeTimeline is an example endpoint.
-
         final Post.Query postsQuery = new Post.Query();
         postsQuery.getTop().withUser();
 
