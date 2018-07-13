@@ -23,6 +23,7 @@ public class PostDetailActivity extends AppCompatActivity {
     ImageView photo_iv;
     TextView caption_tv;
     TextView timestamp_tv;
+    TextView user_tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class PostDetailActivity extends AppCompatActivity {
         photo_iv = findViewById(R.id.photo_iv);
         caption_tv = findViewById(R.id.caption_tv);
         timestamp_tv = findViewById(R.id.timestamp_tv);
+        user_tv = findViewById(R.id.user_tv);
 
         final String objectId = getIntent().getExtras().getString("postObjectId");
         Log.d("DetailActivity", "objectId = " + objectId);
@@ -47,6 +49,7 @@ public class PostDetailActivity extends AppCompatActivity {
                         post = objects.get(i);
                         caption_tv.setText(post.getDescription());
                         timestamp_tv.setText(post.getCreatedAt().toString());
+                        user_tv.setText(post.getUser().getUsername());
 
                         Glide.with(getApplicationContext())
                                 .load(post.getImage().getUrl())

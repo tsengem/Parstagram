@@ -15,10 +15,11 @@
 
     <TextView
         android:id="@+id/tvCaption"
-        android:layout_width="match_parent"
+        android:layout_width="301dp"
         android:layout_height="29dp"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/image_navigation"
+        android:layout_marginStart="73dp"
         android:autoLink="all"
         android:linksClickable="true"
         android:text="Caption" />
@@ -82,5 +83,14 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/tvCaption"
         android:text="Timestamp" />
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="72dp"
+        android:layout_height="29dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/tvCaption"
+        android:text="Username"
+        android:textStyle="bold"/>
 
 </RelativeLayout>

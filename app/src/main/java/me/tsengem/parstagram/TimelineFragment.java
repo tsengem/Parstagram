@@ -79,7 +79,6 @@ public class TimelineFragment extends Fragment {
 
         populateTimeline();
 
-
         rvPosts.setLayoutManager(new LinearLayoutManager(context));
         rvPosts.setAdapter(postAdapter);
 
@@ -92,8 +91,6 @@ public class TimelineFragment extends Fragment {
         Post.Query postsQuery = new Post.Query();
 
         postsQuery.getTop().withUser();
-
-        //postsQuery.orderByDescending("createdAt").setLimit(20);
 
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override
@@ -129,7 +126,5 @@ public class TimelineFragment extends Fragment {
                 swipeContainer.setRefreshing(false);
             }
         });
-
-        //postsQuery.orderByDescending("createdAt").setLimit(20);
     }
 }

@@ -59,6 +59,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.tvCaption.setText(post.getDescription());
 
         holder.tvUsername.setText(user.getUsername());
+        holder.username.setText(user.getUsername());
         holder.tvCreatedAt.setText(post.getCreatedAt().toString());
 
         Glide.with(context)
@@ -89,6 +90,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public TextView tvCaption;
         public TextView tvUsername;
         public TextView tvCreatedAt;
+        public TextView username;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -99,6 +101,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             tvCaption = itemView.findViewById(R.id.tvCaption);
             tvUsername = itemView.findViewById(R.id.tv_username);
             tvCreatedAt = itemView.findViewById(R.id.tv_createdAt);
+            username = itemView.findViewById(R.id.username);
             itemView.setOnClickListener(this);
         }
 

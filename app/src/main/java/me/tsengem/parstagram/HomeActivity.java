@@ -71,14 +71,6 @@ public class HomeActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        /*
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        */
-
-        //getSupportActionBar().setElevation(getResources().getDimensionPixelSize(R.dimen.action_bar_elevation));
-
     }
 
     @Override
@@ -141,42 +133,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-
-                /*
-                // by this point we have the camera photo on disk
-                Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                // RESIZE BITMAP, see section below
-
-                File takenPhotoUri = getPhotoFileUri(photoFileName);
-                // by this point we have the camera photo on disk
-                Bitmap rawTakenImage = BitmapFactory.decodeFile(takenPhotoUri.getPath());
-                // See BitmapScaler.java: https://gist.github.com/nesquena/3885707fd3773c09f1bb
-                Bitmap resizedBitmap = BitmapScaler.scaleToFitWidth(rawTakenImage, 100);
-
-                // Configure byte output stream
-                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                // Compress the image further
-                resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
-                // Create a new file for the resized bitmap (`getPhotoFileUri` defined above)
-                File resizedUri = getPhotoFileUri(photoFileName + "_resized");
-
-                try {
-                    File resizedFile = new File(resizedUri.getPath());
-                    resizedFile.createNewFile();
-                    FileOutputStream fos = new FileOutputStream(resizedFile);
-                    // Write the bytes of the bitmap to file
-                    fos.write(bytes.toByteArray());
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-                // Load the taken image into a preview
-                ImageView ivPreview = (ImageView) findViewById(R.id.ivPreview);
-                ivPreview.setImageBitmap(takenImage);
-                */
-
                 String imagePath = photoFile.getAbsolutePath();
                 Bitmap rawTakenImage = BitmapFactory.decodeFile(imagePath);
                 Bitmap resizedBitmap = BitmapScaler.scaleToFitWidth(rawTakenImage, 400);
@@ -188,4 +144,3 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 }
-
