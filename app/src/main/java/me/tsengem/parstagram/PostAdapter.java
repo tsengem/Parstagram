@@ -1,24 +1,22 @@
 package me.tsengem.parstagram;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.File;
 import java.util.List;
 
 import me.tsengem.parstagram.model.Post;
 import com.bumptech.glide.Glide;
-import com.parse.ParseException;
 import com.parse.ParseFile;
+
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
@@ -70,7 +68,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView ivPost;
         public ImageView ivProfileImage;
         public TextView tvCaption;
@@ -82,6 +80,28 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             ivPost = itemView.findViewById(R.id.ivPost);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvCaption = itemView.findViewById(R.id.tvCaption);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            // get item position
+            int position = getAdapterPosition();
+
+            // make sure the position is valid, i.e. actually exists in the view
+            if (position != RecyclerView.NO_POSITION) {
+                // get the movie at the position
+                Post post = mPosts.get(position);
+
+                // create intent for the new activity
+                Intent intent = new Intent(context, PostDetailActivity.class);
+
+                // serialize the movie using parceler
+                intent.putExtra("postObjectId", post.getObjectId());
+
+                // show the activity
+                context.startActivity(intent);
+            }
         }
     }
 }

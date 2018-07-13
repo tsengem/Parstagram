@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -31,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.instagram_logo);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 */
-
         if (getCurrentUser() != null) {
             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
             startActivity(intent);
