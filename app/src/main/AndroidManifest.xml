@@ -26,11 +26,11 @@
             android:roundIcon="@drawable/icon"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".SignUpActivity"
             android:icon="@drawable/icon"
             android:label="@string/title_activity_sign_up"
             android:roundIcon="@drawable/icon"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:name=".SignUpActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

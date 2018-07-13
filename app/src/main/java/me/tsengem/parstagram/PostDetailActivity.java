@@ -23,7 +23,6 @@ public class PostDetailActivity extends AppCompatActivity {
     ImageView photo_iv;
     TextView caption_tv;
     TextView timestamp_tv;
-    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +51,9 @@ public class PostDetailActivity extends AppCompatActivity {
                         Glide.with(getApplicationContext())
                                 .load(post.getImage().getUrl())
                                 .into(photo_iv);
-
                     }
                 }
             }
         });
-
     }
 }

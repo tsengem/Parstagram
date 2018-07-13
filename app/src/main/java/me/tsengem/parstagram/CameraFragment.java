@@ -1,5 +1,7 @@
 package me.tsengem.parstagram;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -49,7 +51,6 @@ public class CameraFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Log.d("fragments", "post button was clicked!");
         tvCaption = view.findViewById(R.id.caption_et);
-
         pbLoading = view.findViewById(R.id.pbLoading);
         pbLoading.setVisibility(View.INVISIBLE);
 
@@ -58,10 +59,11 @@ public class CameraFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 pbLoading.setVisibility(View.VISIBLE);
-                Toast.makeText(v.getContext(), "Post saved", Toast.LENGTH_LONG).show();
 
                 final Post newPost = new Post();
                 newPost.setDescription(tvCaption.getText().toString());
+                tvCaption.setText("");
+
                 newPost.setUser(ParseUser.getCurrentUser());
 
                 final ParseFile parseFile = new ParseFile(photoFile);
@@ -87,6 +89,7 @@ public class CameraFragment extends Fragment {
 
                     }
                 });
+                Toast.makeText(v.getContext(), "Post saved", Toast.LENGTH_LONG).show();
             }
         });
     }

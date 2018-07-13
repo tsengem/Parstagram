@@ -8,23 +8,31 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import me.tsengem.parstagram.model.Post;
 import com.bumptech.glide.Glide;
+import com.parse.Parse;
 import com.parse.ParseFile;
+import com.parse.ParseUser;
 
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
-    private List<Post> mPosts;
+    private ArrayList<Post> mPosts;
     Context context;
 
-    public PostAdapter(List<Post> posts) {
-        mPosts = posts;
+    public PostAdapter() {
+        mPosts = new ArrayList<Post>();
+    }
+
+    public void add(Post p) {
+        mPosts.add(p);
     }
 
     @Override
@@ -39,12 +47,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+        if (mPosts.size() == 0) {
+            return;
+        }
+
         Post post = mPosts.get(position);
 
-        ParseFile file = post.getImage();
+        ParseUser user = post.getUser();
 
         holder.tvCaption.setText(post.getDescription());
-        //holder.ivProfileImage.setImageBitmap(file.getData());
+
+        holder.tvUsername.setText(user.getUsername());
+        holder.tvCreatedAt.setText(post.getCreatedAt().toString());
 
         Glide.with(context)
                 .load(post.getImage().getUrl())
@@ -72,6 +87,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public ImageView ivPost;
         public ImageView ivProfileImage;
         public TextView tvCaption;
+        public TextView tvUsername;
+        public TextView tvCreatedAt;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -80,6 +97,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             ivPost = itemView.findViewById(R.id.ivPost);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvCaption = itemView.findViewById(R.id.tvCaption);
+            tvUsername = itemView.findViewById(R.id.tv_username);
+            tvCreatedAt = itemView.findViewById(R.id.tv_createdAt);
             itemView.setOnClickListener(this);
         }
 

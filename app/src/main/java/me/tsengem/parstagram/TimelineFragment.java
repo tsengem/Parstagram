@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -35,7 +37,7 @@ public class TimelineFragment extends Fragment {
 
     PostAdapter postAdapter;
     RecyclerView rvPosts;
-    ArrayList<Post> posts;
+    //ArrayList<Post> posts;
     Context context;
 
     private SwipeRefreshLayout swipeContainer;
@@ -48,6 +50,7 @@ public class TimelineFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
 
         // Setup refresh listener which triggers new data loading
@@ -70,35 +73,39 @@ public class TimelineFragment extends Fragment {
 
         context = view.getContext();
         rvPosts = view.findViewById(R.id.rvPosts);
-        posts = new ArrayList<>();
-        postAdapter = new PostAdapter(posts);
+        //posts = new ArrayList<>();
+
+        postAdapter = new PostAdapter();
+
+        populateTimeline();
+
+
         rvPosts.setLayoutManager(new LinearLayoutManager(context));
         rvPosts.setAdapter(postAdapter);
 
-        populateTimeline();
     }
 
     private void populateTimeline() {
         Log.d("TimelineFragment", "populate posts");
 
         //query all post for a user
-        final Post.Query postsQuery = new Post.Query();
+        Post.Query postsQuery = new Post.Query();
+
         postsQuery.getTop().withUser();
+
+        //postsQuery.orderByDescending("createdAt").setLimit(20);
 
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
-
                 if (e == null) {
-                    for (int i = 0; i < objects.size(); i++) {
-                        Post post = objects.get(i);
-                        posts.add(post);
-                        postAdapter.notifyItemInserted(posts.size() - 1);
 
-                        Log.d("HomeActivity", "Post[" + i + "] = "
-                                + objects.get(i).getDescription()
-                                + "\nusername = " + objects.get(i).getUser().getUsername());
-                    }
+                    int n = objects.size();
+                    Log.d("populateTimeLine", "n is : " + n);
+
+                    postAdapter.clear();
+                    postAdapter.addAll(objects);
+                    postAdapter.notifyDataSetChanged();
                 } else {
                     e.printStackTrace();
                 }
@@ -117,10 +124,12 @@ public class TimelineFragment extends Fragment {
                 postAdapter.clear();
                 // ...the data has come back, add new items to your adapter...
                 populateTimeline();
-                postAdapter.addAll(posts);
+                postAdapter.notifyDataSetChanged();
                 // Now we call setRefreshing(false) to signal refresh has finished
                 swipeContainer.setRefreshing(false);
             }
         });
+
+        //postsQuery.orderByDescending("createdAt").setLimit(20);
     }
 }
