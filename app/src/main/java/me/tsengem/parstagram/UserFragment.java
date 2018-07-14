@@ -83,9 +83,11 @@ public class UserFragment extends Fragment {
             }
         });
 
-        Glide.with(UserFragment.this)
-                .load(ParseUser.getCurrentUser().getParseFile("image").getUrl())
-                .into(profileImageIv);
+        if (ParseUser.getCurrentUser().getParseFile("image") != null) {
+            Glide.with(UserFragment.this)
+                    .load(ParseUser.getCurrentUser().getParseFile("image").getUrl())
+                    .into(profileImageIv);
+        }
     }
 
     public void onLaunchCamera() {
