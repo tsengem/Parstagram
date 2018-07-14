@@ -1,4 +1,4 @@
-# Project 3 - *Name of App Here*
+# Project 3 - Parstagram
 
 Parstagram is a photo sharing app using Parse as its backend.
 
