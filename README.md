@@ -60,8 +60,6 @@ List an 3rd party libraries, icons, graphics, or other assets you used in your a
 
 ## Notes
 
-Describe any challenges encountered while building the app.
-
 Heroku Parse application was used for this app.
 
 ## License
