@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Movie;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,7 +13,9 @@ import com.bumptech.glide.Glide;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import me.tsengem.parstagram.model.Post;
 
@@ -48,7 +51,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     if (objects.get(i).getObjectId().equals(objectId)) {
                         post = objects.get(i);
                         caption_tv.setText(post.getDescription());
-                        timestamp_tv.setText(post.getCreatedAt().toString());
+                        timestamp_tv.setText(getRelativeTimeAgo(post.getCreatedAt().toString()));
                         user_tv.setText(post.getUser().getUsername());
 
                         Glide.with(getApplicationContext())
@@ -58,5 +61,23 @@ public class PostDetailActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    // getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");
+    public String getRelativeTimeAgo(String rawJsonDate) {
+        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+        sf.setLenient(true);
+
+        String relativeDate = "";
+        try {
+            long dateMillis = sf.parse(rawJsonDate).getTime();
+            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+
+        return relativeDate;
     }
 }

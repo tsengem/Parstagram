@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +13,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import me.tsengem.parstagram.model.Post;
 import com.bumptech.glide.Glide;
@@ -60,11 +64,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         holder.tvUsername.setText(user.getUsername());
         holder.username.setText(user.getUsername());
-        holder.tvCreatedAt.setText(post.getCreatedAt().toString());
+        holder.tvCreatedAt.setText(getRelativeTimeAgo(post.getCreatedAt().toString()));
 
         Glide.with(context)
                 .load(post.getImage().getUrl())
                 .into(holder.ivPost);
+
+        Glide.with(context)
+                .load(post.getUser().getParseFile("image").getUrl())
+                .into(holder.ivProfileImage);
     }
 
     @Override
@@ -87,6 +95,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView ivPost;
         public ImageView ivProfileImage;
+        public ImageView profileImageIv;
         public TextView tvCaption;
         public TextView tvUsername;
         public TextView tvCreatedAt;
@@ -98,6 +107,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             // perform findViewById lookups
             ivPost = itemView.findViewById(R.id.ivPost);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
+            profileImageIv = itemView.findViewById(R.id.profileImage_iv);
             tvCaption = itemView.findViewById(R.id.tvCaption);
             tvUsername = itemView.findViewById(R.id.tv_username);
             tvCreatedAt = itemView.findViewById(R.id.tv_createdAt);
@@ -125,5 +135,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 context.startActivity(intent);
             }
         }
+    }
+
+    // getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");
+    public String getRelativeTimeAgo(String rawJsonDate) {
+        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+        sf.setLenient(true);
+
+        String relativeDate = "";
+        try {
+            long dateMillis = sf.parse(rawJsonDate).getTime();
+            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return relativeDate;
     }
 }
