@@ -66,7 +66,6 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.ic_user:
                         fragmentTransaction.replace(R.id.flContainer, userFragment).commit();
                         return true;
-
                 }
                 return false;
             }

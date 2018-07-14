@@ -80,8 +80,6 @@ public class UserFragment extends Fragment {
                 final Post newPost = new Post();
 
                 newPost.setUser(ParseUser.getCurrentUser());
-
-
             }
         });
 

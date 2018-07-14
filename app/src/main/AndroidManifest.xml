@@ -42,7 +42,6 @@
                 android:resource="@xml/fileprovider" />
         </provider>
 
-        <activity android:name=".PostActivity" />
         <activity android:name=".UserFragment" />
         <activity android:name=".TimelineFragment" />
         <activity android:name=".PostDetailActivity"></activity>

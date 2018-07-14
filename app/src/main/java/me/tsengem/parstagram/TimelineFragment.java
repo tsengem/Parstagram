@@ -37,7 +37,6 @@ public class TimelineFragment extends Fragment {
 
     PostAdapter postAdapter;
     RecyclerView rvPosts;
-    //ArrayList<Post> posts;
     Context context;
 
     private SwipeRefreshLayout swipeContainer;
@@ -73,20 +72,15 @@ public class TimelineFragment extends Fragment {
 
         context = view.getContext();
         rvPosts = view.findViewById(R.id.rvPosts);
-        //posts = new ArrayList<>();
-
         postAdapter = new PostAdapter();
 
         populateTimeline();
 
         rvPosts.setLayoutManager(new LinearLayoutManager(context));
         rvPosts.setAdapter(postAdapter);
-
     }
 
     private void populateTimeline() {
-        Log.d("TimelineFragment", "populate posts");
-
         //query all post for a user
         Post.Query postsQuery = new Post.Query();
 
@@ -96,10 +90,6 @@ public class TimelineFragment extends Fragment {
             @Override
             public void done(List<Post> objects, ParseException e) {
                 if (e == null) {
-
-                    int n = objects.size();
-                    Log.d("populateTimeLine", "n is : " + n);
-
                     postAdapter.clear();
                     postAdapter.addAll(objects);
                     postAdapter.notifyDataSetChanged();

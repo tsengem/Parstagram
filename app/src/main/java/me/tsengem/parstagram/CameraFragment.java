@@ -86,7 +86,6 @@ public class CameraFragment extends Fragment {
                                 }
                             });
                         }
-
                     }
                 });
                 Toast.makeText(v.getContext(), "Post saved", Toast.LENGTH_LONG).show();

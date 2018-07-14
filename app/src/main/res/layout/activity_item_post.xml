@@ -92,5 +92,4 @@
         android:layout_alignTop="@+id/tvCaption"
         android:text="Username"
         android:textStyle="bold"/>
-
 </RelativeLayout>
